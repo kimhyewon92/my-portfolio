@@ -13,15 +13,23 @@ spyEls.forEach(function (spyEl) {
 .addTo(controller); // 컨트롤러에 장면을 할당(필수!) - 라이브러리에서 지정한 문법으로 깊게 이해X
 });
 
+const postit = document.querySelector('.postit');
+  new ScrollMagic.Scene({ // 감시할 장면 추가 및 옵션 지정
+    triggerElement: postit, // 보여짐 여부를 감시할 요소를 지정
+    triggerHook: 0.7 // 화면의 50% 지점에서 보여짐 여부 감시(0~1사이 지정) (옵션)
+})
+.setClassToggle(postit, 'postit_turn') // 요소가 화면에 보이면 show 클래스 추가 (옵션)
+.addTo(controller);
+
 // Swiper 사용
 const swiper = new Swiper('.project .swiper', {
   // 슬라이드 옵션 지정
     direction: 'vertical',  // 수직 슬라이드
     direction: 'horizontal',  // 수평 슬라이드(기본값)
     loop: true, // 반복 재생 여부, 1 -> 2 -> 3 -> 다시 1
-    autoplay: { // 자동 재생 여부
-    delay: 5000 // 5초마다 슬라이드 바뀜(기본값: 3000)
-  },
+  //   autoplay: { // 자동 재생 여부
+  //   delay: 5000 // 5초마다 슬라이드 바뀜(기본값: 3000)
+  // },
   
   // 페이지네이션 옵션
   pagination: {
@@ -32,12 +40,12 @@ const swiper = new Swiper('.project .swiper', {
   // 이전/다음 슬라이드 버튼 옵션
   navigation: {
     nextEl: '.project .swiper-button-next',
-    prevEl: '.project .swiper-button-prev',
-  },
+    prevEl: '.project .swiper-button-prev'
+  }
 });
 
 // 모달창 띄우기
-const modalBtn = document.querySelector('.project .btn-modal')
+const modalBtns = document.querySelectorAll('.project .btn-modal')
 const modalEl = document.querySelector('#modal')
 const closeBtn = document.querySelector('#modal .btn-close')
 
@@ -49,11 +57,14 @@ const imageEl = document.querySelector('#imageModal img')
 // Quiz: 
 // style 속성: JS로 CSS 스타일을 제어할 수 있는 속성
 // 예시: 요소.style.CSS속성="";
-modalBtn.addEventListener('click', function () {
-  modalEl.style.display = 'flex';
-});
-closeBtn.addEventListener('click', function () {
-  modalEl.style.display = 'none';
+modalBtns.forEach(function (modalBtn) {
+  
+  modalBtn.addEventListener('click', function () {
+    modalEl.style.display = 'flex';
+  });
+  closeBtn.addEventListener('click', function () {
+    modalEl.style.display = 'none';
+  });
 });
 
 imageModalBtnList.forEach(function (imageModalBtn, index) {
@@ -117,3 +128,17 @@ menuItems.forEach(function (menuItem) {
     navEl.classList.remove('active');
   });
 });
+
+const content = "안녕하세요 :) \n Full Stack Developer 김혜원입니다.";
+const text = document.querySelector(".text");
+let i = 0;
+
+function typing(){
+    let txt = content[i++];
+    text.innerHTML += txt=== "\n" ? "<br/>": txt;
+    if (i > content.length) {
+        text.textContent = "";
+        i = 0;
+    }
+}
+setInterval(typing, 130)
